@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
+def readme():
+    with open('README.md') as f:
+        return f.read()
+
 setup(name='klein_mongo',
       version='0.1',
       description='MongoDB integration',
