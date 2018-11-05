@@ -1,3 +1,3 @@
 # Klein Mongo
 
-Module to allso simple instantiation of MongoDB from configuration
+Module to allow simple instantiation of MongoDB from configuration
