@@ -1,0 +1,52 @@
+image: python:latest
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache"
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+stages: 
+  - codestyle
+  - test
+  - publish
+
+before_script:
+  - pip install -r requirements.txt --extra-index-url http://13.0.1.67/mdc/stable --trusted-host 13.0.1.37
+
+pep8:
+  stage: codestyle
+  script:
+    - pip install autopep8
+    - autopep8 -r -a --in-place klein_mongo/*
+
+lint:
+  stage: test
+  script:
+    - pip install pylint
+    - pylint klein_mongo/*
+
+publish-unstable:
+  stage: publish
+  script:
+    - pip install devpi-client
+    - devpi use http://13.0.1.67
+    - devpi login "gitlab-ci-token" --password "$CI_BUILD_TOKEN"
+    - devpi use "mdc/unstable"
+    - python setup.py sdist bdist_wheel
+    - devpi upload --formats sdist,bdist_wheel
+  except:
+    - master
+
+publish-stable:
+  stage: publish
+  script:
+    - pip install devpi-client
+    - devpi use http://13.0.1.67
+    - devpi login "gitlab-ci-token" --password "$CI_BUILD_TOKEN"
+    - devpi use "mdc/stable"
+    - python setup.py sdist bdist_wheel
+    - devpi upload --formats sdist,bdist_wheel
+  only:
+    - master
