@@ -13,7 +13,7 @@ stages:
   - publish
 
 before_script:
-  - pip install -r requirements.txt --trusted-host=13.0.1.37 --extra-index-url=http://13.0.1.67/mdc/stable 
+  - pip install -r requirements.txt --trusted-host=13.0.1.67 --extra-index-url=http://13.0.1.67/mdc/stable 
 
 pep8:
   stage: codestyle
