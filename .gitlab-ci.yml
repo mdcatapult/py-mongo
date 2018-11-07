@@ -30,8 +30,6 @@ publish-unstable:
     - devpi use "mdc/unstable"
     - python setup.py sdist bdist_wheel
     - devpi upload --formats sdist,bdist_wheel
-  except:
-    - master
 
 publish-stable:
   stage: publish
