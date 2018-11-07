@@ -4,20 +4,20 @@ from pymongo import MongoClient
 
 params = dict()
 
-if "username" in config['mongo']:
-    params["username"] = config['mongo']['username']
+if config.has('mongo.username'):
+    params["username"] = config.get('mongo.username')
 
-if "password" in config['mongo']:
-    params["password"] = config['mongo']['password']
+if config.has('mongo.password'):
+    params["password"] = config.get('mongo.password')
 
-if "database" in config['mongo'] and "username" in params:
-    params["authSource"] = config['mongo']['database']
+if config.has('mongo.database') and "username" in params:
+    params["authSource"] = config.get('mongo.database')
 
-if "authMechanism" in config['mongo'] and "password" in params:
-    params["authMechanism"] = config['mongo']['authMechanism']
+if config.has('mongo.authMechanism') and "password" in params:
+    params["authMechanism"] = config.get('mongo.authMechanism')
 
 
-client = MongoClient(config['mongo']['host'], config['mongo'].getint('port'), **params)
+client = MongoClient(config.get('mongo.host'), int(config.get('mongo.port')), **params)
 
-db = client[config['mongo']['database']]
-docs = db[config['mongo']['collection']]
+db = client[config.get('mongo.database')]
+docs = db[config.get('mongo.collection')]
