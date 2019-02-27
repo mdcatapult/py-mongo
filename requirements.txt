@@ -3,3 +3,4 @@ pymongo
 pylint
 pytest
 pytest-cov
+twine
