@@ -1,2 +1,5 @@
 klein_config
 pymongo
+pylint
+pytest
+pytest-cov
