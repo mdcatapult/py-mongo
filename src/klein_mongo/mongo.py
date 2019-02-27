@@ -10,7 +10,9 @@ if config.has('mongo.username'):
 if config.has('mongo.password'):
     params["password"] = config.get('mongo.password')
 
-if config.has('mongo.database') and "username" in params:
+if config.has('mongo.authSource'):
+    params["authSource"] = config.get('mongo.authSource')
+elif config.has('mongo.database') and "username" in params:
     params["authSource"] = config.get('mongo.database')
 
 if config.has('mongo.authMechanism') and "password" in params:
