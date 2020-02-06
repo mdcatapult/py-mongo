@@ -61,10 +61,8 @@ class MongoConnection:
 
     @lazy_property
     def client(self):
-        print(self.params)
-        return MongoClient(*self.host,
-                           replicaset=self.replicaSet,
-                           **self.params)
+        c = MongoClient(*self.host, replicaset=self.replicaSet, **self.params)
+        return c
 
     @lazy_property
     def db(self):
