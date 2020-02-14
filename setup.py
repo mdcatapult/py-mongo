@@ -6,7 +6,7 @@ def readme():
         return f.read()
 
 setup(name='klein_mongo',
-      version='0.1.2',
+      version='1.0.0',
       description='MongoDB integration',
       url='http://gitlab.mdcatapult.io/informatics/klein/klein_mongo',
       author='Matt Cockayne',
