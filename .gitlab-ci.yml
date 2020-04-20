@@ -22,10 +22,10 @@ lint:
   script:
     - pylint --rcfile=.pylintrc src
 
-# test:
-#   stage: test
-#   script:
-#     - python -m pytest
+test:
+  stage: test
+  script:
+    - python -m pytest
 
 publish-stable:
   stage: publish
