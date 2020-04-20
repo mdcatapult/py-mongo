@@ -57,7 +57,13 @@ class MongoConnection:
             self.collection = config.get('mongo.collection')
 
         if config.has('mongo.readPreference'):
-            self.params["read_preference"] = config.get('mongo.readPreference')
+            self.params["readPreference"] = config.get('mongo.readPreference')
+
+        # Use cross language compatible UUID encoding as default. Can be overridden with
+        # 'pythonLegacy', 'javaLegacy' or 'csharpLegacy' if required.
+        # ref: https://api.mongodb.com/python/current/api/pymongo/mongo_client.html?
+        self.params['uuidRepresentation'] = config.get('mongo.uuidRepresentation', 'standard')
+
 
     @lazy_property
     def client(self):
