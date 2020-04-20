@@ -1,5 +1,5 @@
 import argparse
-import mock
+from unittest import mock
 
 yamlStringHostPort = """
 mongo:
@@ -9,6 +9,7 @@ mongo:
   password: m001-mongodb-basics
   database: video
   collection: movies
+  readPreference: secondary
 """
 
 
