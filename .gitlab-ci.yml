@@ -1,4 +1,3 @@
-image: python:latest
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache"
 
@@ -11,11 +10,13 @@ stages:
   - test
   - publish
 
-before_script:
-  - >
-    pip install -r requirements.txt --trusted-host=nexus.mdcatapult.io 
-    --index=https://$NEXUS_USERNAME:$NEXUS_PASSWORD@nexus.mdcatapult.io/repository/pypi-all/pypi 
-    --index-url=https://$NEXUS_USERNAME:$NEXUS_PASSWORD@nexus.mdcatapult.io/repository/pypi-all/simple
+default:
+  image: registry.mdcatapult.io/informatics/docker-images/ci:python-v1.0.0
+  before_script:
+    - >
+      pip install -r requirements.txt --trusted-host=nexus.mdcatapult.io
+      --index=https://$NEXUS_USERNAME:$NEXUS_PASSWORD@nexus.mdcatapult.io/repository/pypi-all/pypi
+      --index-url=https://$NEXUS_USERNAME:$NEXUS_PASSWORD@nexus.mdcatapult.io/repository/pypi-all/simple
 
 lint:
   stage: test
@@ -23,6 +24,11 @@ lint:
     - wopr
   script:
     - pylint --rcfile=.pylintrc src
+  except:
+    refs:
+      - master
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^Setting version to.*/
 
 test:
   stage: test
@@ -32,7 +38,6 @@ test:
     - pytest --cov-report term:skip-covered --cov src/ test/
   coverage: '/TOTAL.*\s+(\d+%)$/'
 
-
 publish-stable:
   stage: publish
   tags:
@@ -41,14 +46,34 @@ publish-stable:
     - python setup.py sdist bdist_wheel
     - twine upload -u $NEXUS_USERNAME -p $NEXUS_PASSWORD --repository-url https://nexus.mdcatapult.io/repository/pypi-stable/ dist/*
   only:
-    - master
+    refs:
+      - tags
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^Setting version to.*/
 
 publish-unstable:
   stage: publish
   tags:
     - wopr
   script:
-    - python setup.py egg_info -b.build-$CI_JOB_ID sdist bdist_wheel
+    - python setup.py egg_info sdist bdist_wheel
     - twine upload -u $NEXUS_USERNAME -p $NEXUS_PASSWORD --repository-url https://nexus.mdcatapult.io/repository/pypi-unstable/ dist/*
   except:
+    refs:
+      - master
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^Setting version to.*/
+
+release:
+  stage: release
+  tags:
+    - wopr
+  before_script:
+    - ''
+  script:
+    - /scripts/release.sh src
+  only:
     - master
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^Setting version to.*/
