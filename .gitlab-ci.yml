@@ -9,6 +9,7 @@ cache:
 stages: 
   - test
   - publish
+  - release
 
 default:
   image: registry.mdcatapult.io/informatics/docker-images/ci:python-v1.0.0
