@@ -1,2 +1,2 @@
-__version__ = '1.0.3'
-__hash__ = '41c662f'
+__version__ = '1.0.4a0'
+__hash__ = 'd4144dd'
