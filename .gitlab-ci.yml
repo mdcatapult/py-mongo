@@ -36,7 +36,7 @@ test:
   tags:
     - wopr
   script:
-    - pytest --cov-report term:skip-covered --cov src/ test/
+    - python -m pytest --cov-report term:skip-covered --cov src/ test/
   coverage: '/TOTAL.*\s+(\d+%)$/'
 
 publish-stable:
