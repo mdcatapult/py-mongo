@@ -23,7 +23,8 @@ class TestPyMongoClient:
         config = EnvironmentAwareConfig()
         mock_open.assert_called_with('dummy.yml', 'r')
 
-        from src.klein_mongo.mongo import connection
+        from src.klein_mongo import MongoConnection
+        connection = MongoConnection(config)
         assert isinstance(connection.host, list)
         assert len(connection.host) == 2
 
