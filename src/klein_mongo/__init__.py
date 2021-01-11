@@ -1,1 +1,1 @@
-from .connect import MongoConnection, get_connection
+from .connect import MongoConnection, get_client

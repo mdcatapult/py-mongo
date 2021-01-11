@@ -65,5 +65,5 @@ class MongoConnection:
         return c
 
 
-def get_connection(config):
-    return MongoConnection(config)
+def get_client(config):
+    return MongoConnection(config).client
