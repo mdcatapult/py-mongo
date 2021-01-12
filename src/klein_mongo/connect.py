@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pymongo import MongoClient
+from pymongo import MongoClient as _MongoClient
 
 
 def lazy_property(fn):
@@ -50,12 +50,6 @@ class MongoConnection:
         if config.has('mongo.replicaSet'):
             self.replicaSet = config.get('mongo.replicaSet')
 
-        if config.has('mongo.database'):
-            self.database = config.get('mongo.database')
-
-        if config.has('mongo.collection'):
-            self.collection = config.get('mongo.collection')
-
         if config.has('mongo.readPreference'):
             self.params["readPreference"] = config.get('mongo.readPreference')
 
@@ -67,15 +61,9 @@ class MongoConnection:
 
     @lazy_property
     def client(self):
-        c = MongoClient(*self.host, replicaset=self.replicaSet, **self.params)
+        c = _MongoClient(*self.host, replicaset=self.replicaSet, **self.params)
         return c
 
-    @lazy_property
-    def db(self):
-        db = self.client[self.database]
-        return db
 
-    @lazy_property
-    def docs(self):
-        docs = self.db[self.collection]
-        return docs
+def get_client(config):
+    return MongoConnection(config).client

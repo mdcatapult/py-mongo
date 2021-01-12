@@ -1,4 +1,1 @@
-from .mongo import client
-from .mongo import db
-from .mongo import docs
-
+from .connect import MongoConnection, get_client
