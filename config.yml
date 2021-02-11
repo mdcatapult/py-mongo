@@ -1,6 +1,0 @@
-mongo:
-  host: mongodb+srv://wopr-mongo.medcat.local
-  username: dummy
-  password: dummy
-  database: mdc
-  collection: documentLibrary

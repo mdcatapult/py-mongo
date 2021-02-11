@@ -1,1 +1,1 @@
-from .connect import MongoConnection, get_client
+from .connect import MongoConnection, get_client, ConfigError

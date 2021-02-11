@@ -15,13 +15,16 @@ def lazy_property(fn):
     return _lazy_property
 
 
+class ConfigError(Exception):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
 class MongoConnection:
 
     def __init__(self, config):
         self.params = dict()
 
-        self._db = None
-        self._docs = None
         self.replicaSet = None
 
         if config.has('mongo.username'):
@@ -39,13 +42,21 @@ class MongoConnection:
         if config.has('mongo.authMechanism') and "password" in self.params:
             self.params["authMechanism"] = config.get('mongo.authMechanism')
 
-        if isinstance(config.get('mongo.host'), str):
-            if config.get('mongo.host').startswith("mongodb+srv"):
-                self.host = [config.get('mongo.host')]
+        host = config.get('mongo.host')
+        srv = config.get('mongo.srv', False)
+        use_srv = srv is True or (isinstance(srv, str) and srv.lower() in ['true', '1', 'yes'])
+        if isinstance(host, str):
+            if use_srv:
+                self.host = [f"mongodb+srv://{host}"]
             else:
-                self.host = [config.get('mongo.host'), int(config.get('mongo.port'))]
+                self.host = [host, int(config.get('mongo.port', 27017))]
+        elif isinstance(host, list):
+            if use_srv:
+                self.host = [f"mongodb+srv://{host[0]}"]
+            else:
+                self.host = [",".join(config.get("mongo.host")), int(config.get('mongo.port', 27017))]
         else:
-            self.host = [",".join(config.get("mongo.host")), int(config.get('mongo.port'))]
+            raise ConfigError("mongo hosts must be string or list of strings")
 
         if config.has('mongo.replicaSet'):
             self.replicaSet = config.get('mongo.replicaSet')
@@ -57,7 +68,6 @@ class MongoConnection:
         # 'pythonLegacy', 'javaLegacy' or 'csharpLegacy' if required.
         # ref: https://api.mongodb.com/python/current/api/pymongo/mongo_client.html?
         self.params['uuidRepresentation'] = config.get('mongo.uuidRepresentation', 'standard')
-
 
     @lazy_property
     def client(self):
