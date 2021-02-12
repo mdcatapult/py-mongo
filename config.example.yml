@@ -1,0 +1,29 @@
+mongo:
+  
+  # Mandatory. Can be a string or a list of strings.
+  # 
+  # If using an SRV record, DNS is resolved against the first host and the others are ignored.
+  # To avoid confusion, you should provide the host as a single string. You should not prepend 
+  # any host with 'mongodb+srv'.
+  # 
+  # If not using an SRV record, the client will connect to all hosts in the list. If the replicaSet 
+  # option is set, the client will verify that all hosts belong to the same replica set.
+  host:
+    - mongo0.mdc.org
+    - mongo1.mdc.org
+    - mongo2.mdc.org
+
+  # Optional. Defaults to 27017
+  port: 27017
+
+  # Mandatory.
+  username: dummy-user
+
+  # Mandatory
+  password: dummy-password
+
+  # Optional. Defaults to false. Set to true to connect with the 'mongodb+srv' protocol
+  srv: true
+
+  # Optional. The replicaSet to connect to. This is not required if connecting with the 'srv' method.
+  replicaSet: mdc
