@@ -1,8 +1,13 @@
 mongo:
+  
   # Mandatory. Can be a string or a list of strings.
+  # 
   # If using an SRV record, DNS is resolved against the first host and the others are ignored.
-  # Otherwise, the client will connect to all hosts.
-  # If the replicaSet option is set, the client will verify that all hosts belong to the same replica set.
+  # To avoid confusion, you should provide the host as a single string. You should not prepend 
+  # any host with 'mongodb+srv'.
+  # 
+  # If not using an SRV record, the client will connect to all hosts in the list. If the replicaSet 
+  # option is set, the client will verify that all hosts belong to the same replica set.
   host:
     - mongo0.mdc.org
     - mongo1.mdc.org
