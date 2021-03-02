@@ -22,7 +22,7 @@ setup(name='klein_mongo',
       packages=find_packages('src'),
       package_dir={'':'src'},
       install_requires=[
-          'klein_config',
-          'pymongo'
+          'klein_config~=3.0',
+          'pymongo[srv]~=3.11',
       ],
       zip_safe=True)

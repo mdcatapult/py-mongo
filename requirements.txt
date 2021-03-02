@@ -1,7 +1,6 @@
-klein_config
-pymongo
+klein_config~=3.0
+pymongo[srv]~=3.11
 pylint
 pytest
 pytest-cov
 twine
-dnspython
