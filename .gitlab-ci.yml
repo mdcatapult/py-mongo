@@ -15,7 +15,7 @@ default:
   image: registry.mdcatapult.io/informatics/docker-images/ci/python:3.7
   before_script:
     - >
-      pip install -r requirements.txt --trusted-host=nexus.wopr.inf.mdc
+      pip install -r requirements.txt  
       --index=https://$NEXUS_USERNAME:$NEXUS_PASSWORD@nexus.wopr.inf.mdc/repository/pypi-all/pypi
       --index-url=https://$NEXUS_USERNAME:$NEXUS_PASSWORD@nexus.wopr.inf.mdc/repository/pypi-all/simple
 
@@ -45,7 +45,7 @@ publish-stable:
     - wopr
   script:
     - python setup.py sdist bdist_wheel
-    - twine upload --cert "$WOPR_CRT" -u $NEXUS_USERNAME -p $NEXUS_PASSWORD --repository-url https://nexus.wopr.inf.mdc/repository/pypi-stable/ dist/*
+    - twine upload -u $NEXUS_USERNAME -p $NEXUS_PASSWORD --repository-url https://nexus.wopr.inf.mdc/repository/pypi-stable/ dist/*
   only:
     refs:
       - tags
@@ -58,7 +58,7 @@ publish-unstable:
     - wopr
   script:
     - python setup.py egg_info sdist bdist_wheel
-    - twine upload --cert "$WOPR_CRT" -u $NEXUS_USERNAME -p $NEXUS_PASSWORD --repository-url https://nexus.wopr.inf.mdc/repository/pypi-unstable/ dist/*
+    - twine upload -u $NEXUS_USERNAME -p $NEXUS_PASSWORD --repository-url https://nexus.wopr.inf.mdc/repository/pypi-unstable/ dist/*
   except:
     refs:
       - master
