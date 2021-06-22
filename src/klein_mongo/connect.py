@@ -60,8 +60,7 @@ class MongoConnection:
         if config.has('mongo.replicaSet'):
             self.replicaSet = config.get('mongo.replicaSet')
 
-        if config.has('mongo.readPreference'):
-            self.params["readPreference"] = config.get('mongo.readPreference')
+        self.params["readPreference"] = config.get('mongo.readPreference', 'secondaryPreferred')
 
         # Use cross language compatible UUID encoding as default. Can be overridden with
         # 'pythonLegacy', 'javaLegacy' or 'csharpLegacy' if required.
