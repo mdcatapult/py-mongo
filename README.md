@@ -8,6 +8,12 @@ See the [config.example.yml](./config.example.yml) for example configuration.
 
 Uses python 3.7 but should be compatible with later versions.
 
+## Usage
+
+```python
+connection = MongoConnection(config)
+```
+
 ## Development
 We use `virtualenv` for local development environments: `pip install virtualenv`.
 
