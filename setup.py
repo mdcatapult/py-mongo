@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
 
@@ -32,7 +31,7 @@ setup(name='klein_mongo',
       url='http://gitlab.mdcatapult.io/informatics/klein/klein_mongo',
       author='Medicines Discovery Catapult',
       author_email='SoftwareEngineering@md.catapult.org.uk',
-      license='MIT',
+      license='Apache V2',
       packages=find_packages('src'),
       package_dir={'':'src'},
       install_requires=[

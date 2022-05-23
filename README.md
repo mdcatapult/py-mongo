@@ -29,3 +29,6 @@ For test coverage you can run:
 ```bash
 pytest --cov-report term:skip-covered --cov src/ test/
 ```
+
+### License
+This project is licensed under the terms of the Apache 2 license, which can be found in the repository as `LICENSE.txt`
