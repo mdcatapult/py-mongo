@@ -15,9 +15,9 @@ Once installed, run:
 ```
 virtualenv -p python3.7 venv
 source venv/bin/activate
-pip config set global.index https://nexus.mdcatapult.io/repository/pypi-all
-pip config set global.index-url https://nexus.mdcatapult.io/repository/pypi-all/simple
-pip config set global.trusted-host nexus.mdcatapult.io
+pip config set global.index https://nexus.wopr.inf.mdc/repository/pypi-all
+pip config set global.index-url https://nexus.wopr.inf.mdc/repository/pypi-all/simple
+pip config set global.trusted-host nexus.wopr.inf.mdc
 pip install -r requirements.txt
 ```
 Then configure your IDE to use the python interpreter located at `venv/bin/python`.

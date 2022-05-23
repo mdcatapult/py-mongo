@@ -36,7 +36,7 @@ class ConfigError(Exception):
 class MongoConnection:
 
     def __init__(self, config):
-        self.params = dict()
+        self.params = {}
 
         self.replicaSet = None
 
