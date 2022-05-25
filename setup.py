@@ -13,6 +13,9 @@
 # limitations under the License.
 
 from setuptools import setup, find_packages
+from pathlib import Path
+this_directory = Path(__file__).parent
+readme_description = (this_directory / "README.md").read_text()
 
 
 def readme():
@@ -28,7 +31,9 @@ if __version__ == '':
 setup(name='klein_mongo',
       version=__version__,
       description='MongoDB integration',
-      url='http://gitlab.mdcatapult.io/informatics/klein/klein_mongo',
+      long_description=readme_description,
+      long_description_content_type='text/markdown',
+      url='https://github.com/mdcatapult/py-mongo',
       author='Medicines Discovery Catapult',
       author_email='SoftwareEngineering@md.catapult.org.uk',
       license='Apache V2',
