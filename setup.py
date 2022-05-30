@@ -43,4 +43,5 @@ setup(name='klein_mongo',
           'klein_config~=3.0',
           'pymongo[srv]~=3.11',
       ],
-      zip_safe=True)
+      zip_safe=True,
+      include_package_data=True)
