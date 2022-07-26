@@ -46,6 +46,7 @@ publish-stable:
   script:
     - python setup.py sdist bdist_wheel
     - twine upload -u $NEXUS_USERNAME -p $NEXUS_PASSWORD --repository-url https://nexus.wopr.inf.mdc/repository/pypi-stable/ dist/*
+    - twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD --repository-url https://upload.pypi.org/legacy/ dist/*
   only:
     refs:
       - tags
