@@ -80,6 +80,11 @@ class MongoConnection:
         # ref: https://api.mongodb.com/python/current/api/pymongo/mongo_client.html?
         self.params['uuidRepresentation'] = config.get('mongo.uuidRepresentation', 'standard')
 
+        # There are some data with strings that cannot be handled by unicode
+        # This may cause an error during query
+        # Default this to ignore as there is no known good way to handle this other than ignoring corrupted data
+        self.params['unicode_decode_error_handler'] = config.get('mongo.unicode_decode_error_handler', 'ignore')
+
     @lazy_property
     def client(self):
         c = _MongoClient(*self.host, replicaset=self.replicaSet, **self.params)
