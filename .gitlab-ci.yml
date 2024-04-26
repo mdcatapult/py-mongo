@@ -84,6 +84,12 @@ sast:
   inherit:
     default: false        
 
+secret_detection:
+  stage: secret-detection
+  allow_failure: false
+  inherit:
+    default: false
+
 include:
   - template: Jobs/Secret-Detection.gitlab-ci.yml
   - template: Security/Dependency-Scanning.gitlab-ci.yml
