@@ -19,7 +19,7 @@ We use `virtualenv` for local development environments: `pip install virtualenv`
 
 Once installed, run:
 ```
-virtualenv -p python3.7 venv
+virtualenv -p python3.11 venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```

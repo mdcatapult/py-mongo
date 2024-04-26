@@ -37,6 +37,7 @@ publish-stable:
   script:
     - python setup.py sdist bdist_wheel
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${REGISTRY_HOST_PROJECT_ID}/packages/pypi dist/*
+    - twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD --repository-url https://upload.pypi.org/legacy/ dist/*
   only:
     refs:
       - tags
