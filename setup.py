@@ -40,8 +40,8 @@ setup(name='klein_mongo',
       packages=find_packages('src'),
       package_dir={'':'src'},
       install_requires=[
-          'klein_config>=3.0, <4',
-          'pymongo[srv]>=3.11, <4',
+          'klein_config>=3.0',
+          'pymongo[srv]>=4.4.1',
       ],
       zip_safe=True,
       include_package_data=True)
