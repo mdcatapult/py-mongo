@@ -85,7 +85,7 @@ sast:
     default: false        
 
 secret_detection:
-  stage: secret-detection
+  stage: test
   allow_failure: false
   inherit:
     default: false
