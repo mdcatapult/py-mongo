@@ -12,41 +12,31 @@ stages:
   - release
 
 default:
-  image: registry.mdcatapult.io/informatics/docker-images/ci/python:3.7
+  image: registry.gitlab.com/medicines-discovery-catapult/informatics/docker-images/ci/python:3.11
   before_script:
-    - >
-      pip install -r requirements.txt  
-      --index=https://$NEXUS_USERNAME:$NEXUS_PASSWORD@nexus.wopr.inf.mdc/repository/pypi-all/pypi
-      --index-url=https://$NEXUS_USERNAME:$NEXUS_PASSWORD@nexus.wopr.inf.mdc/repository/pypi-all/simple
+    - pip install -r requirements.txt  
 
 lint:
   stage: test
-  tags:
-    - wopr
   script:
     - pylint --rcfile=.pylintrc src
   except:
     refs:
-      - master
+      - main
     variables:
       - $CI_COMMIT_MESSAGE =~ /^Setting version to.*/
 
 test:
   stage: test
-  tags:
-    - wopr
   script:
     - python -m pytest --cov-report term:skip-covered --cov src/ test/
   coverage: '/TOTAL.*\s+(\d+%)$/'
 
 publish-stable:
   stage: publish
-  tags:
-    - wopr
   script:
     - python setup.py sdist bdist_wheel
-    - twine upload -u $NEXUS_USERNAME -p $NEXUS_PASSWORD --repository-url https://nexus.wopr.inf.mdc/repository/pypi-stable/ dist/*
-    - twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD --repository-url https://upload.pypi.org/legacy/ dist/*
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${REGISTRY_HOST_PROJECT_ID}/packages/pypi dist/*
   only:
     refs:
       - tags
@@ -55,27 +45,52 @@ publish-stable:
 
 publish-unstable:
   stage: publish
-  tags:
-    - wopr
   script:
     - python setup.py egg_info sdist bdist_wheel
-    - twine upload -u $NEXUS_USERNAME -p $NEXUS_PASSWORD --repository-url https://nexus.wopr.inf.mdc/repository/pypi-unstable/ dist/*
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --skip-existing --repository-url ${CI_API_V4_URL}/projects/${REGISTRY_HOST_PROJECT_ID}/packages/pypi dist/*
   except:
     refs:
-      - master
+      - main
     variables:
       - $CI_COMMIT_MESSAGE =~ /^Setting version to.*/
 
 release:
   stage: release
-  tags:
-    - wopr
   before_script:
     - ''
   script:
-    - /scripts/release.sh src
+    - cictl exec release python
   only:
-    - master
+    - main
   except:
     variables:
       - $CI_COMMIT_MESSAGE =~ /^Setting version to.*/
+
+dependency_scanning:
+  stage: test
+  before_script:
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+  allow_failure: false
+  inherit:
+    default: false
+
+sast:
+  stage: test
+  before_script:
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+  allow_failure: false
+  inherit:
+    default: false        
+
+secret_detection:
+  stage: test
+  allow_failure: false
+  inherit:
+    default: false
+
+include:
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
