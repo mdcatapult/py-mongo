@@ -70,7 +70,7 @@ dependency_scanning:
   stage: test
   before_script:
     - pip install --upgrade pip
-    - pip install -r requirements_without_torch.txt
+    - pip install -r requirements.txt
   allow_failure: false
   inherit:
     default: false
