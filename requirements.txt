@@ -1,5 +1,5 @@
 klein_config>=3.0.0
-pymongo[srv]>=3.11, <4
+pymongo[srv]>=4.6.3, <5
 pylint
 pytest
 pytest-cov
